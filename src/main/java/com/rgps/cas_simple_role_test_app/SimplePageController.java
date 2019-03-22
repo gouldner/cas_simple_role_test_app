@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class SimplePageController {
-
     @RequestMapping("/notprotected")
     public String HelloAgain() {
         return "Hello from a non-protected page";
@@ -17,27 +16,15 @@ public class SimplePageController {
         return "Hello you really shouldn't be here.";
     }
 
+    @Secured("ROLE_CAS_USER")
+    @RequestMapping("/protectedByCasUserRole")
+    public String HelloCasUserUser() {
+        return "Hello Cas Authenticated User";
+    }
 
-    @RequestMapping("/externalUser")
+    @Secured("ROLE_EXT_USER")
+    @RequestMapping("/protectedByExtUserRole")
     public String HelloExternalUser() {
-        return "Hello External User with User Role";
-    }
-
-    @Secured("ROLE_USER")
-    @RequestMapping("/protectedByUserRole")
-    public String HelloUser() {
-        return "Hello User Role";
-    }
-
-    @Secured("ROLE_ADMIN")
-    @RequestMapping("/protectedByAdminRole")
-    public String HelloAdmin() {
-        return "Hello Admin Role";
-    }
-
-    @Secured("ROLE_COIADMIN")
-    @RequestMapping("/protectedByCoiAdminRole")
-    public String HelloCoiAdmin() {
-        return "Hello Coi Admin Role";
+        return "Hello External Authenticated User";
     }
 }

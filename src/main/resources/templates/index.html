@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+</head>
+<body>
+<style>
+    .padded {
+        padding: 20px;
+    }
+</style>
+
+<!-- View for user not yet authenticated -->
+<div class="container-fluid">
+    <div class="padded d-flex justify-content-center">
+        <div class="collapse navbar-collapse" id="collapsibleNavbar-unauth" sec:authorize="isAnonymous()">
+            <h1>
+                <ul>
+                    <li>
+                        <a href="login">Login CAS</a>
+                    </li>
+                    <li>
+                        <a href="external_login">Login External User</a>
+                    </li>
+                </ul>
+            </h1>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar-unauth" sec:authorize="!isAnonymous()">
+        <h1>
+            <ul>
+                <li>
+                    <a href="logout">Logout</a>
+                </li>
+            </ul>
+        </h1>
+    </div>
+
+    <div class="padded d-flex justify-content-center">
+        <h2 class="text-center" sec:authorize="isAnonymous()">Welcome please select login method </h2>
+    </div>
+    <div sec:authorize="hasRole('CAS_USER')">
+        <h2 class="text-center">Welcome username:<span th:text="${#authentication.getPrincipal()}">...</span>, I see you are a CAS Authenticated User</h2>
+        <h3>You may visit the following page</h3>
+        <ul>
+            <li>
+                <a href="protectedByCasUserRole">Cas User Page</a>
+            </li>
+        </ul>
+        <h3>You may NOT visit the following page, it will produce error</h3>
+        <ul>
+            <li>
+                <a href="protectedByExtUserRole">External User Page</a>
+            </li>
+        </ul>
+    </div>
+    <div sec:authorize="hasRole('EXT_USER')">
+        <h2 class="text-center">Welcome username:<span th:text="${#authentication.getPrincipal()}">...</span>, I see you are an External In Memory Authenticated User</h2>
+        <h3>You may visit the following page</h3>
+        <ul>
+            <li>
+                <a href="protectedByExtUserRole">External User Page</a>
+            </li>
+        </ul>
+        <h3>You may NOT visit the following page, it will produce error</h3>
+        <ul>
+            <li>
+                <a href="protectedByCasUserRole">Cas User Page</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>
